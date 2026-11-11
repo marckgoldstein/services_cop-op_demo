@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f3">
+    <title>Member Dashboard | Neighborhood Services Co-Op</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #20312e;
+            --muted: #53625e;
+            --green: #24574e;
+            --green-dark: #183f39;
+            --green-soft: #e8f1eb;
+            --paper: #ffffff;
+            --canvas: #f5f7f3;
+            --gold: #f1c46a;
+            --line: #dce5de;
+            --shadow: 0 18px 48px rgba(32, 49, 46, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(3.75rem, 8vw, 6rem) 1.25rem clamp(5rem, 9vw, 7rem);
+            background:
+                radial-gradient(ellipse at 82% 15%, rgba(241, 196, 106, 0.18), transparent 30rem),
+                linear-gradient(135deg, var(--green-dark), var(--green));
+            color: #fff;
+        }
+
+        .hero::after {
+            position: absolute;
+            right: -5rem;
+            bottom: -11rem;
+            width: 25rem;
+            height: 25rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            content: "";
+            box-shadow: 0 0 0 2.5rem rgba(255, 255, 255, 0.035), 0 0 0 5rem rgba(255, 255, 255, 0.025);
+            pointer-events: none;
+        }
+
+        .hero-inner,
+        .page-content,
+        .nav-inner {
+            width: min(100% - 2.5rem, 70rem);
+            margin-inline: auto;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            animation: arrive 650ms ease-out both;
+        }
+
+        .eyebrow {
+            margin-bottom: 0.75rem;
+            color: #d9e8dc;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0 0 0.65rem;
+            font-size: clamp(2.4rem, 5vw, 3.75rem);
+            font-weight: 700;
+            letter-spacing: -0.045em;
+            line-height: 1.1;
+        }
+
+        .hero-description {
+            max-width: 40rem;
+            margin: 0;
+            color: #e1ece6;
+            font-size: clamp(1.02rem, 2vw, 1.15rem);
+        }
+
+        .member-nav {
+            position: relative;
+            z-index: 2;
+            margin-top: -1.65rem;
+        }
+
+        .nav-inner {
+            display: flex;
+            min-height: 3.3rem;
+            align-items: center;
+            gap: 1.3rem;
+            overflow-x: auto;
+            padding: 0.65rem 1.25rem;
+            border: 1px solid rgba(220, 229, 222, 0.9);
+            border-radius: 0.8rem;
+            background: var(--paper);
+            box-shadow: 0 8px 24px rgba(32, 49, 46, 0.06);
+        }
+
+        .nav-brand {
+            flex: 0 0 auto;
+            color: var(--green-dark);
+            font-size: 0.92rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            flex: 1;
+            justify-content: flex-end;
+            gap: 1.1rem;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            font-size: 0.88rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus-visible {
+            color: var(--green);
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+        }
+
+        .page-content {
+            padding-block: 2.75rem clamp(3rem, 7vw, 5rem);
+        }
+
+        .dashboard-section + .dashboard-section {
+            margin-top: clamp(3rem, 7vw, 5rem);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-kicker {
+            margin-bottom: 0.45rem;
+            color: var(--green);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            margin-bottom: 0.4rem;
+            color: var(--green-dark);
+            font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+            letter-spacing: -0.035em;
+            line-height: 1.2;
+        }
+
+        .section-description {
+            margin-bottom: 0;
+            color: var(--muted);
+        }
+
+        .section-link {
+            flex: 0 0 auto;
+            color: var(--green);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .section-link:hover,
+        .section-link:focus-visible {
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .service-card {
+            display: flex;
+            min-height: 9.5rem;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            padding: 1.35rem;
+            border: 1px solid var(--line);
+            border-radius: 0.9rem;
+            background: var(--paper);
+            color: inherit;
+            box-shadow: 0 4px 14px rgba(32, 49, 46, 0.035);
+            text-decoration: none;
+            transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .service-card:hover,
+        .service-card:focus-within {
+            transform: translateY(-3px);
+            border-color: #b6cec0;
+            box-shadow: 0 14px 28px rgba(32, 49, 46, 0.09);
+        }
+
+        .service-card:focus-visible {
+            outline: 3px solid rgba(36, 87, 78, 0.3);
+            outline-offset: 3px;
+        }
+
+        .service-icon {
+            display: grid;
+            width: 2.7rem;
+            height: 2.7rem;
+            place-items: center;
+            border-radius: 0.75rem;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .service-icon img {
+            display: block;
+            width: 1.8rem;
+            height: 1.8rem;
+            object-fit: contain;
+        }
+
+        .service-card h3 {
+            margin: 1rem 0 0.2rem;
+            color: var(--green-dark);
+            font-size: 1.07rem;
+            line-height: 1.3;
+        }
+
+        .service-card p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+
+        .events-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 0.8fr);
+            gap: 1.25rem;
+            align-items: stretch;
+        }
+
+        .event-list {
+            display: grid;
+            gap: 0.8rem;
+        }
+
+        .event-card {
+            display: grid;
+            grid-template-columns: 4.5rem minmax(0, 1fr);
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--line);
+            border-radius: 0.85rem;
+            background: var(--paper);
+            transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .event-card:hover,
+        .event-card:focus-within {
+            transform: translateY(-2px);
+            border-color: #b6cec0;
+            box-shadow: 0 10px 24px rgba(32, 49, 46, 0.07);
+        }
+
+        .event-date {
+            display: grid;
+            min-height: 4.2rem;
+            align-content: center;
+            justify-items: center;
+            border-radius: 0.7rem;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            line-height: 1.15;
+        }
+
+        .event-date strong {
+            font-size: 1.4rem;
+        }
+
+        .event-date span {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .event-time {
+            margin-bottom: 0.2rem;
+            color: var(--green);
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .event-card h3 {
+            margin: 0 0 0.15rem;
+            color: var(--green-dark);
+            font-size: 1rem;
+            line-height: 1.35;
+        }
+
+        .event-card p:last-child {
+            margin-bottom: 0;
+            color: var(--muted);
+            font-size: 0.86rem;
+        }
+
+        .calendar-card {
+            padding: 1.25rem;
+            border: 1px solid var(--line);
+            border-radius: 0.9rem;
+            background: var(--green-soft);
+        }
+
+        .calendar-card h3 {
+            margin-bottom: 0.15rem;
+            color: var(--green-dark);
+            font-size: 1.05rem;
+        }
+
+        .calendar-caption {
+            margin-bottom: 1rem;
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, minmax(0, 1fr));
+            gap: 0.3rem;
+            text-align: center;
+        }
+
+        .calendar-grid span {
+            display: grid;
+            min-height: 2rem;
+            place-items: center;
+            border-radius: 50%;
+            color: #344942;
+            font-size: 0.8rem;
+        }
+
+        .calendar-grid .weekday {
+            min-height: 1.6rem;
+            color: var(--muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .calendar-grid .event-day {
+            background: var(--green);
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .calendar-legend {
+            display: flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin: 0.85rem 0 0;
+            color: var(--muted);
+            font-size: 0.78rem;
+        }
+
+        .legend-dot {
+            width: 0.6rem;
+            height: 0.6rem;
+            border-radius: 50%;
+            background: var(--green);
+        }
+
+        .vote-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .vote-card {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            padding: 1.5rem;
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            background: var(--paper);
+            box-shadow: 0 5px 18px rgba(32, 49, 46, 0.04);
+            transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .vote-card:hover,
+        .vote-card:focus-within {
+            transform: translateY(-3px);
+            border-color: #b6cec0;
+            box-shadow: 0 14px 28px rgba(32, 49, 46, 0.09);
+        }
+
+        .vote-number {
+            margin-bottom: 0.4rem;
+            color: var(--green);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .vote-card h3 {
+            margin-bottom: 0.65rem;
+            color: var(--green-dark);
+            font-size: 1.2rem;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+
+        .vote-body {
+            margin-bottom: 0.65rem;
+            color: var(--muted);
+            font-size: 0.93rem;
+        }
+
+        .vote-details {
+            margin-bottom: 0.75rem;
+            padding: 0.85rem;
+            border-left: 3px solid var(--gold);
+            background: #fbf8ef;
+            color: #46534e;
+            font-size: 0.87rem;
+        }
+
+        .vote-details[hidden] {
+            display: none;
+        }
+
+        .read-more {
+            align-self: flex-start;
+            margin: 0 0 1.1rem;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--green);
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 0.18em;
+            cursor: pointer;
+        }
+
+        .vote-deadline {
+            margin: auto 0 1rem;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--line);
+            color: var(--muted);
+            font-size: 0.82rem;
+        }
+
+        .vote-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+        }
+
+        .vote-button {
+            min-height: 2.8rem;
+            padding: 0.55rem 0.8rem;
+            border: 1px solid var(--green);
+            border-radius: 999px;
+            background: var(--paper);
+            color: var(--green-dark);
+            font: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: color 160ms ease, background-color 160ms ease, border-color 160ms ease, transform 160ms ease;
+        }
+
+        .vote-button:hover {
+            transform: translateY(-1px);
+            background: var(--green-soft);
+        }
+
+        .vote-button[aria-pressed="true"] {
+            border-color: var(--green-dark);
+            background: var(--green);
+            color: #fff;
+        }
+
+        .vote-button:focus-visible,
+        .read-more:focus-visible {
+            outline: 3px solid rgba(36, 87, 78, 0.3);
+            outline-offset: 3px;
+        }
+
+        .vote-status {
+            min-height: 1.4em;
+            margin: 0.75rem 0 0;
+            color: var(--green-dark);
+            font-size: 0.82rem;
+            font-weight: 600;
+        }
+
+        .page-footer {
+            padding: 1.5rem 1.25rem;
+            background: var(--green-dark);
+            color: #dce8e1;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .page-footer p {
+            margin: 0;
+        }
+
+        @keyframes arrive {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 760px) {
+            .service-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .events-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .calendar-card {
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-inner,
+            .page-content,
+            .nav-inner {
+                width: min(100% - 1.5rem, 70rem);
+            }
+
+            .nav-inner {
+                gap: 0.9rem;
+                padding-inline: 0.85rem;
+            }
+
+            .nav-links {
+                justify-content: flex-start;
+                gap: 0.85rem;
+            }
+
+            .nav-links a {
+                white-space: nowrap;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+            }
+
+            .service-card {
+                min-height: 8.8rem;
+                padding: 1rem;
+            }
+
+            .vote-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .event-card {
+                grid-template-columns: 3.8rem minmax(0, 1fr);
+                gap: 0.75rem;
+                padding: 0.8rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-inner">
+            <p class="eyebrow">Neighborhood Services Co-Op · Member portal</p>
+            <h1>Your Co-Op Dashboard</h1>
+            <p class="hero-description">Welcome back, Brewerytown Neighbor. Find services, see what's happening, and help shape your co-op.</p>
+        </div>
+    </header>
+
+    <nav class="member-nav" aria-label="Dashboard sections">
+        <div class="nav-inner">
+            <a class="nav-brand" href="#top">Neighborhood Co-Op</a>
+            <div class="nav-links">
+                <a href="#services">Services</a>
+                <a href="#events">Events</a>
+                <a href="#votes">Community Votes</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="page-content" id="top">
+        <section class="dashboard-section" id="services" aria-labelledby="services-heading">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Member services</p>
+                    <h2 id="services-heading">Access your services</h2>
+                    <p class="section-description">Explore the services available to co-op members.</p>
+                </div>
+            </div>
+
+            <div class="service-grid">
+                <article class="service-card">
+                    <span class="service-icon" aria-hidden="true"><img src="Icons/Recycle.png" alt=""></span>
+                    <div><h3>Recycling Services</h3><p>Drop-off and neighborhood recycling</p></div>
+                </article>
+                <article class="service-card">
+                    <span class="service-icon" aria-hidden="true"><img src="Icons/Compost.png" alt=""></span>
+                    <div><h3>Compost Services</h3><p>Keep food scraps in the community cycle</p></div>
+                </article>
+                <article class="service-card">
+                    <span class="service-icon" aria-hidden="true"><img src="Icons/Mail.png" alt=""></span>
+                    <div><h3>Mail Services</h3><p>Convenient neighborhood mail support</p></div>
+                </article>
+                <a class="service-card" href="Member%20Pitch%20Page.html">
+                    <span class="service-icon" aria-hidden="true"><img src="Icons/Tool%20Library.png" alt=""></span>
+                    <div><h3>Tool Library</h3><p>Borrow tools and share what we own</p></div>
+                </a>
+                <article class="service-card">
+                    <span class="service-icon" aria-hidden="true"><img src="Icons/Printer.png" alt=""></span>
+                    <div><h3>Printers</h3><p>Print what you need close to home</p></div>
+                </article>
+                <article class="service-card">
+                    <span class="service-icon" aria-hidden="true"><img src="Icons/Repair.png" alt=""></span>
+                    <div><h3>Repair Cafe</h3><p>Learn, fix, and make things last</p></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="dashboard-section" id="events" aria-labelledby="events-heading">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Around the neighborhood</p>
+                    <h2 id="events-heading">Events Calendar</h2>
+                    <p class="section-description">See what's coming up in your co-op community.</p>
+                </div>
+            </div>
+
+            <div class="events-layout">
+                <div class="event-list" aria-label="Upcoming events, in chronological order">
+                    <article class="event-card">
+                        <time class="event-date" datetime="2026-11-28"><strong>28</strong><span>Nov</span></time>
+                        <div>
+                            <p class="event-time">Saturday · 10:00 am</p>
+                            <h3>Repair Cafe</h3>
+                            <p>Bring a household item to repair with neighbors. Location A.</p>
+                        </div>
+                    </article>
+                    <article class="event-card">
+                        <time class="event-date" datetime="2026-11-29"><strong>29</strong><span>Nov</span></time>
+                        <div>
+                            <p class="event-time">Sunday · 12:00 pm</p>
+                            <h3>Resolution B voting closes</h3>
+                            <p>Cast your vote online before the community decision closes.</p>
+                        </div>
+                    </article>
+                    <article class="event-card">
+                        <time class="event-date" datetime="2026-12-12"><strong>12</strong><span>Dec</span></time>
+                        <div>
+                            <p class="event-time">Saturday · 10:00 am</p>
+                            <h3>Location B Cleanup Day</h3>
+                            <p>Help neighbors care for a shared community space. Location B.</p>
+                        </div>
+                    </article>
+                </div>
+
+                <aside class="calendar-card" aria-label="November 2026 event calendar preview">
+                    <h3>November 2026</h3>
+                    <p class="calendar-caption">Community events this month</p>
+                    <div class="calendar-grid" aria-hidden="true">
+                        <span class="weekday">Su</span><span class="weekday">Mo</span><span class="weekday">Tu</span><span class="weekday">We</span><span class="weekday">Th</span><span class="weekday">Fr</span><span class="weekday">Sa</span>
+                        <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+                        <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+                        <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+                        <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span class="event-day">28</span>
+                        <span class="event-day">29</span><span>30</span>
+                    </div>
+                    <p class="calendar-legend"><span class="legend-dot" aria-hidden="true"></span>Upcoming event</p>
+                </aside>
+            </div>
+        </section>
+
+        <section class="dashboard-section" id="votes" aria-labelledby="votes-heading">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Your voice matters</p>
+                    <h2 id="votes-heading">Community Votes</h2>
+                    <p class="section-description">Vote on active resolutions. Your choice is saved on this device and can be changed any time.</p>
+                </div>
+            </div>
+
+            <div class="vote-grid">
+                <article class="vote-card" data-resolution="314">
+                    <p class="vote-number">Resolution 314</p>
+                    <h3>Lease Location C</h3>
+                    <p class="vote-body">Resolved that the Co-Op will sign the lease at Location C at 2845 W Girard Ave.</p>
+                    <div class="vote-details" id="details-314" hidden>
+                        <p>The proposed lease would secure a new neighborhood hub for co-op services and member gatherings. Members are invited to review the proposal and share their vote before the resolution closes.</p>
+                    </div>
+                    <button class="read-more" type="button" aria-expanded="false" aria-controls="details-314">Read More</button>
+                    <p class="vote-deadline">Voting concludes Jan 10, 2027 at 11:59 pm</p>
+                    <div class="vote-actions" role="group" aria-label="Vote on Resolution 314">
+                        <button class="vote-button" type="button" data-vote="no" aria-pressed="false">Vote No</button>
+                        <button class="vote-button" type="button" data-vote="yes" aria-pressed="false">Vote Yes</button>
+                    </div>
+                    <p class="vote-status" role="status" aria-live="polite"></p>
+                </article>
+
+                <article class="vote-card" data-resolution="315">
+                    <p class="vote-number">Resolution 315</p>
+                    <h3>Purchase Drill Press</h3>
+                    <p class="vote-body">Resolved that the Co-Op will purchase a drill press for the workshop space.</p>
+                    <div class="vote-details" id="details-315" hidden>
+                        <p>The proposed equipment would expand the shared workshop's ability to support repair projects and skill-building events. Members can change their vote until voting closes.</p>
+                    </div>
+                    <button class="read-more" type="button" aria-expanded="false" aria-controls="details-315">Read More</button>
+                    <p class="vote-deadline">Voting concludes Jan 10, 2027 at 11:59 pm</p>
+                    <div class="vote-actions" role="group" aria-label="Vote on Resolution 315">
+                        <button class="vote-button" type="button" data-vote="no" aria-pressed="false">Vote No</button>
+                        <button class="vote-button" type="button" data-vote="yes" aria-pressed="false">Vote Yes</button>
+                    </div>
+                    <p class="vote-status" role="status" aria-live="polite"></p>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <p>Neighborhood Services Co-Op · Member dashboard demo</p>
+    </footer>
+
+    <script>
+        const voteStorageKey = 'neighborhoodCoopDemoVotes';
+        const voteCards = document.querySelectorAll('.vote-card');
+
+        function showStorageWarning(message) {
+            voteCards.forEach((card) => {
+                card.querySelector('.vote-status').textContent = message;
+            });
+        }
+
+        function renderVote(card, vote, statusMessage) {
+            card.querySelectorAll('.vote-button').forEach((button) => {
+                button.setAttribute('aria-pressed', String(button.dataset.vote === vote));
+            });
+
+            card.querySelector('.vote-status').textContent = statusMessage || (vote
+                ? `Your vote: ${vote === 'yes' ? 'Yes' : 'No'}. You can change it any time.`
+                : '');
+        }
+
+        function readSavedVotes() {
+            const savedVotes = JSON.parse(localStorage.getItem(voteStorageKey) || '{}');
+            if (!savedVotes || typeof savedVotes !== 'object' || Array.isArray(savedVotes)) {
+                throw new Error('Saved vote data is not valid.');
+            }
+            return savedVotes;
+        }
+
+        try {
+            const savedVotes = readSavedVotes();
+            voteCards.forEach((card) => {
+                const vote = savedVotes[card.dataset.resolution];
+                if (vote === 'yes' || vote === 'no') {
+                    renderVote(card, vote);
+                }
+            });
+        } catch (error) {
+            showStorageWarning('Saved votes are unavailable in this browser session; selections may not persist after closing this page.');
+        }
+
+        document.querySelectorAll('.read-more').forEach((button) => {
+            button.addEventListener('click', () => {
+                const details = document.getElementById(button.getAttribute('aria-controls'));
+                const isExpanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', String(!isExpanded));
+                button.textContent = isExpanded ? 'Read More' : 'Read Less';
+                details.hidden = isExpanded;
+            });
+        });
+
+        voteCards.forEach((card) => {
+            card.querySelectorAll('.vote-button').forEach((button) => {
+                button.addEventListener('click', () => {
+                    const vote = button.dataset.vote;
+                    let savedVotes;
+
+                    try {
+                        savedVotes = readSavedVotes();
+                    } catch (error) {
+                        renderVote(card, vote, 'Your selection is shown, but saved votes are unavailable in this browser.');
+                        return;
+                    }
+
+                    savedVotes[card.dataset.resolution] = vote;
+
+                    try {
+                        localStorage.setItem(voteStorageKey, JSON.stringify(savedVotes));
+                        renderVote(card, vote);
+                    } catch (error) {
+                        renderVote(card, vote, 'Your selection is shown, but could not be saved in this browser.');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

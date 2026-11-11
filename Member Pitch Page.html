@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f3">
+    <meta name="description" content="A neighbor-powered roadmap for bringing the Neighborhood Services Co-Op to life.">
+    <title>Our Roadmap | Neighborhood Services Co-Op</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #20312e;
+            --muted: #53625e;
+            --green: #24574e;
+            --green-dark: #183f39;
+            --green-soft: #e8f1eb;
+            --paper: #ffffff;
+            --canvas: #f5f7f3;
+            --gold: #f1c46a;
+            --line: #dce5de;
+            --shadow: 0 18px 48px rgba(32, 49, 46, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(4.5rem, 11vw, 7rem) 1.25rem clamp(5.5rem, 10vw, 7.5rem);
+            background:
+                radial-gradient(ellipse at 82% 15%, rgba(241, 196, 106, 0.18), transparent 30rem),
+                linear-gradient(135deg, var(--green-dark), var(--green));
+            color: #fff;
+            text-align: center;
+        }
+
+        .hero::after {
+            position: absolute;
+            right: -5rem;
+            bottom: -11rem;
+            width: 25rem;
+            height: 25rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            content: "";
+            box-shadow: 0 0 0 2.5rem rgba(255, 255, 255, 0.035), 0 0 0 5rem rgba(255, 255, 255, 0.025);
+            pointer-events: none;
+        }
+
+        .hero-inner,
+        .page-content {
+            width: min(100% - 2.5rem, 70rem);
+            margin-inline: auto;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            animation: arrive 700ms ease-out both;
+        }
+
+        h1 {
+            max-width: 18ch;
+            margin: 0 auto 1rem;
+            font-size: clamp(2.5rem, 6vw, 4.4rem);
+            font-weight: 700;
+            letter-spacing: -0.045em;
+            line-height: 1.08;
+        }
+
+        .hero-description {
+            max-width: 42rem;
+            margin: 0 auto;
+            color: #e1ece6;
+            font-size: clamp(1.05rem, 2vw, 1.22rem);
+            line-height: 1.65;
+        }
+
+        .page-content {
+            position: relative;
+            z-index: 2;
+            padding-block: 0 clamp(3.5rem, 8vw, 6rem);
+        }
+
+        .roadmap-intro {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) clamp(11rem, 24vw, 15rem);
+            gap: clamp(1rem, 3vw, 2rem);
+            align-items: center;
+            max-width: 48rem;
+            margin: -3.25rem auto 3.25rem;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border: 1px solid rgba(220, 229, 222, 0.9);
+            border-radius: 1.15rem;
+            background: var(--paper);
+            box-shadow: var(--shadow);
+            text-align: left;
+            transition: left 420ms ease, width 420ms ease, padding 300ms ease, border-radius 300ms ease, box-shadow 300ms ease, grid-template-columns 300ms ease;
+        }
+
+        .roadmap-intro.is-pinned {
+            position: fixed;
+            z-index: 20;
+            top: 0;
+            left: var(--intro-origin-left);
+            width: var(--intro-origin-width);
+            max-width: none;
+            margin: 0;
+            grid-template-columns: minmax(0, 1fr) clamp(12rem, 20vw, 15rem);
+            gap: clamp(1rem, 2vw, 2rem);
+            border-radius: 0;
+        }
+
+        .roadmap-intro.is-expanded {
+            left: 0;
+            width: 100vw;
+            padding: 0.75rem max(1.25rem, calc((100% - 70rem) / 2));
+            box-shadow: 0 10px 28px rgba(32, 49, 46, 0.15);
+        }
+
+        .intro-copy h2 {
+            margin-bottom: 0.35rem;
+            font-size: clamp(1.35rem, 3vw, 2rem);
+        }
+
+        .intro-copy p {
+            margin-bottom: 0;
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .signup-qr {
+            display: grid;
+            justify-items: stretch;
+            margin: 0;
+        }
+
+        .signup-qr-button {
+            display: block;
+            width: 100%;
+            padding: 0.35rem;
+            border: 1px solid var(--line);
+            border-radius: 0.75rem;
+            background: #fff;
+            line-height: 0;
+            cursor: zoom-in;
+            transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .signup-qr-button:hover {
+            transform: scale(1.025);
+            border-color: var(--green);
+            box-shadow: 0 8px 20px rgba(32, 49, 46, 0.12);
+        }
+
+        .signup-qr-button:focus-visible,
+        .signup-qr-close:focus-visible,
+        .signup-qr-cta:focus-visible {
+            outline: 3px solid rgba(36, 87, 78, 0.35);
+            outline-offset: 3px;
+        }
+
+        .signup-qr img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .signup-qr-dialog {
+            position: fixed;
+            width: min(92vw, 42rem);
+            max-width: none;
+            max-height: min(92vh, 52rem);
+            overflow: auto;
+            padding: clamp(1rem, 3vw, 2rem);
+            border: 1px solid var(--line);
+            border-radius: 1.25rem;
+            background: var(--paper);
+            color: var(--ink);
+            box-shadow: 0 28px 80px rgba(13, 30, 25, 0.3);
+        }
+
+        .signup-qr-dialog::backdrop {
+            background: rgba(15, 31, 27, 0.72);
+            backdrop-filter: blur(4px);
+        }
+
+        .signup-qr-dialog-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .signup-qr-dialog h2 {
+            margin: 0;
+            font-size: clamp(1.25rem, 3vw, 1.8rem);
+        }
+
+        .signup-qr-close {
+            display: grid;
+            width: 2.75rem;
+            height: 2.75rem;
+            flex: 0 0 auto;
+            place-items: center;
+            border: 1px solid var(--line);
+            border-radius: 50%;
+            background: var(--paper);
+            color: var(--green-dark);
+            font: inherit;
+            font-size: 1.5rem;
+            line-height: 1;
+            cursor: pointer;
+        }
+
+        .signup-qr-dialog-image {
+            display: block;
+            width: min(100%, 34rem);
+            max-height: calc(92vh - 12rem);
+            margin: 0 auto;
+            object-fit: contain;
+            border: 0.5rem solid #fff;
+            border-radius: 0.75rem;
+            background: #fff;
+            box-shadow: 0 0 0 1px var(--line);
+        }
+
+        .signup-qr-dialog-footer {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .signup-qr-dialog-footer p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .signup-qr-cta {
+            display: inline-flex;
+            min-height: 2.8rem;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1.1rem;
+            border: 1px solid var(--green);
+            border-radius: 999px;
+            background: var(--green);
+            color: #fff;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .signup-qr-cta:hover {
+            background: var(--green-dark);
+        }
+
+        .roadmap-intro-placeholder {
+            pointer-events: none;
+        }
+
+        h2 {
+            margin-bottom: 0.7rem;
+            color: var(--green-dark);
+            font-size: clamp(1.75rem, 3.5vw, 2.4rem);
+            letter-spacing: -0.035em;
+            line-height: 1.2;
+        }
+
+        .roadmap-intro > p:last-child {
+            max-width: 38rem;
+            margin: 0 auto;
+            color: var(--muted);
+        }
+
+        .roadmap {
+            position: relative;
+            display: grid;
+            max-width: 55rem;
+            gap: 1rem;
+            margin-inline: auto;
+            padding: 0;
+            list-style: none;
+            counter-reset: roadmap;
+        }
+
+        .roadmap::before {
+            position: absolute;
+            top: 2rem;
+            bottom: 2rem;
+            left: 2rem;
+            width: 2px;
+            background: linear-gradient(var(--gold), #bdd3c4 15%, #bdd3c4 85%, var(--gold));
+            content: "";
+        }
+
+        .roadmap-step {
+            position: relative;
+            display: grid;
+            grid-template-columns: 4rem minmax(0, 1fr);
+            gap: 1rem;
+            align-items: start;
+            counter-increment: roadmap;
+        }
+
+        .step-number {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            width: 4rem;
+            height: 4rem;
+            place-items: center;
+            border: 5px solid var(--canvas);
+            border-radius: 50%;
+            background: var(--green);
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            box-shadow: 0 0 0 1px rgba(36, 87, 78, 0.15);
+        }
+
+        .step-number::before {
+            content: counter(roadmap, decimal-leading-zero);
+        }
+
+        .step-card {
+            min-width: 0;
+            padding: clamp(1.2rem, 3vw, 1.75rem);
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            background: var(--paper);
+            box-shadow: 0 5px 18px rgba(32, 49, 46, 0.04);
+            transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-2px);
+            border-color: #b6cec0;
+            box-shadow: 0 12px 28px rgba(32, 49, 46, 0.08);
+        }
+
+        .step-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--green-dark);
+            font-size: clamp(1.13rem, 2.4vw, 1.35rem);
+            letter-spacing: -0.02em;
+            line-height: 1.35;
+        }
+
+        .step-card > p:last-child,
+        .step-card > p:only-of-type {
+            margin-bottom: 0;
+        }
+
+        .topic-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem 1.5rem;
+            margin: 0.9rem 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .topic-list > li {
+            position: relative;
+            padding-left: 1.15rem;
+            color: var(--muted);
+        }
+
+        .topic-list > li::before {
+            position: absolute;
+            top: 0.72em;
+            left: 0;
+            width: 0.45rem;
+            height: 0.45rem;
+            border-radius: 50%;
+            background: var(--gold);
+            content: "";
+        }
+
+        .workshop-groups {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .workshop-group {
+            padding: 1rem;
+            border: 1px solid var(--line);
+            border-radius: 0.75rem;
+            background: #fbfcfa;
+        }
+
+        .workshop-group h4 {
+            margin: 0 0 0.55rem;
+            color: var(--green-dark);
+            font-size: 0.96rem;
+        }
+
+        .workshop-group ul {
+            display: grid;
+            gap: 0.35rem;
+            margin: 0;
+            padding-left: 1.2rem;
+            color: var(--muted);
+            font-size: 0.9rem;
+        }
+
+        .closing-card {
+            max-width: 55rem;
+            margin: 2rem auto 0;
+            padding: clamp(1.5rem, 4vw, 2.5rem);
+            border: 1px solid rgba(241, 196, 106, 0.7);
+            border-radius: 1rem;
+            background:
+                radial-gradient(ellipse at 100% 0%, rgba(241, 196, 106, 0.2), transparent 24rem),
+                var(--green-soft);
+            text-align: center;
+        }
+
+        .closing-card h2 {
+            margin-bottom: 0.5rem;
+            font-size: clamp(1.45rem, 3vw, 2rem);
+        }
+
+        .closing-card p {
+            max-width: 40rem;
+            margin: 0 auto;
+            color: #40564d;
+        }
+
+        .page-footer {
+            padding: 1.5rem 1.25rem;
+            background: var(--green-dark);
+            color: #dce8e1;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .page-footer p {
+            margin: 0;
+        }
+
+        @keyframes arrive {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-inner,
+            .page-content {
+                width: min(100% - 1.5rem, 70rem);
+            }
+
+            .roadmap-intro {
+                grid-template-columns: minmax(0, 1fr) 7rem;
+                gap: 0.75rem;
+                margin-top: -2.75rem;
+                padding: 1.1rem;
+            }
+
+            .roadmap-intro.is-pinned {
+                grid-template-columns: minmax(0, 1fr) 7rem;
+                gap: 0.65rem;
+            }
+
+            .roadmap-intro.is-expanded {
+                padding: 0.6rem 0.75rem;
+            }
+
+            .intro-copy h2 {
+                font-size: 1.2rem;
+            }
+
+            .intro-copy p {
+                font-size: 0.78rem;
+                line-height: 1.4;
+            }
+
+            .signup-qr-button {
+                padding: 0.2rem;
+            }
+
+            .signup-qr-dialog {
+                width: min(96vw, 42rem);
+                max-height: 96vh;
+                padding: 0.85rem;
+                border-radius: 0.9rem;
+            }
+
+            .signup-qr-dialog-image {
+                width: min(100%, 34rem);
+                max-height: calc(96vh - 10rem);
+                border-width: 0.3rem;
+            }
+
+            .signup-qr-dialog-footer {
+                align-items: stretch;
+                flex-direction: column;
+            }
+
+            .signup-qr-cta {
+                width: 100%;
+            }
+
+            .roadmap::before {
+                left: 1.45rem;
+            }
+
+            .roadmap-step {
+                grid-template-columns: 2.9rem minmax(0, 1fr);
+                gap: 0.65rem;
+            }
+
+            .step-number {
+                width: 2.9rem;
+                height: 2.9rem;
+                border-width: 4px;
+                font-size: 0.82rem;
+            }
+
+            .topic-list,
+            .workshop-groups {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-inner">
+            <h1>Steps to Make the Co-Op a Reality</h1>
+            <p class="hero-description">A shared roadmap for turning a neighborhood vision into a community-owned co-op.</p>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <section class="roadmap-intro" aria-labelledby="roadmap-heading">
+            <div class="intro-copy">
+                <h2 id="roadmap-heading">Scan here to sign up</h2>
+            </div>
+            <div class="signup-qr">
+                <button class="signup-qr-button" type="button" aria-haspopup="dialog" aria-controls="signupQrDialog" aria-label="Enlarge the QR code for the Co-Op member sign-up form">
+                    <img src="signup-qr.png" alt="">
+                </button>
+            </div>
+        </section>
+
+        <dialog class="signup-qr-dialog" id="signupQrDialog" aria-labelledby="signupQrDialogTitle">
+            <div class="signup-qr-dialog-header">
+                <h2 id="signupQrDialogTitle">Join the Neighborhood Co-Op</h2>
+                <button class="signup-qr-close" type="button" aria-label="Close QR code dialog">&times;</button>
+            </div>
+            <img class="signup-qr-dialog-image" src="signup-qr.png" alt="Large QR code for the Co-Op member sign-up form">
+            <div class="signup-qr-dialog-footer">
+                <p>Scan this code with your phone camera to open the sign-up form.</p>
+                <a class="signup-qr-cta" href="coop%20signup%20demo.html">Open sign-up form</a>
+            </div>
+        </dialog>
+
+        <ol class="roadmap" aria-label="Steps to make the co-op a reality">
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Design the initial approach, goals, and requirements</h3>
+                    <ul class="topic-list">
+                        <li>Goal</li>
+                        <li>Mission</li>
+                        <li>Approach</li>
+                        <li>Initial procedures</li>
+                        <li>Bylaws</li>
+                    </ul>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Organize founding committees</h3>
+                    <ul class="topic-list">
+                        <li>Strategy</li>
+                        <li>Services</li>
+                        <li>Legal, rules, and bylaws</li>
+                        <li>Membership</li>
+                        <li>Outreach</li>
+                    </ul>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Set the overall architecture and goals for the community co-op</h3>
+                    <ul class="topic-list">
+                        <li>Design initial services</li>
+                        <li>Design and implement the initial co-ownership structure</li>
+                        <li>Build budget requirements</li>
+                        <li>Conduct a funding operation</li>
+                    </ul>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Present a startup plan to the initial founding group</h3>
+                    <p>Bring the early ideas and groundwork together in a plan the founding group can review and build on.</p>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Meet with the overall group to workshop initiatives and refine goals</h3>
+                    <div class="workshop-groups">
+                        <section class="workshop-group" aria-labelledby="services-workshop">
+                            <h4 id="services-workshop">Brainstorm initial services</h4>
+                            <ul>
+                                <li>Access control</li>
+                                <li>Mail and package drop-off point</li>
+                                <li>Circularity hub</li>
+                                <li>Bike repair hub</li>
+                                <li>Physical item library</li>
+                                <li>And more</li>
+                            </ul>
+                        </section>
+                        <section class="workshop-group" aria-labelledby="management-workshop">
+                            <h4 id="management-workshop">Set the technical approach to management</h4>
+                            <ul>
+                                <li>Organizational structure and ownership model</li>
+                                <li>Documentation needed</li>
+                                <li>Resources and fiduciary tools needed</li>
+                                <li>Community engagement strategy</li>
+                                <li>Organizational support and sponsorship strategy</li>
+                                <li>Engagement and social media strategy</li>
+                            </ul>
+                        </section>
+                    </div>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Set a cadence for ongoing services review</h3>
+                    <p>Make regular space to review how services are working and where they can grow.</p>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Build out and procure services</h3>
+                    <p>Turn the community's priorities into useful, shared services.</p>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Seek new members and do outreach</h3>
+                    <p>Invite more neighbors to take part, contribute ideas, and help shape the co-op.</p>
+                </article>
+            </li>
+
+            <li class="roadmap-step">
+                <span class="step-number" aria-hidden="true"></span>
+                <article class="step-card">
+                    <h3>Run the co-op!</h3>
+                    <p>Keep ownership, decision-making, and community needs at the heart of the work.</p>
+                </article>
+            </li>
+        </ol>
+
+        <aside class="closing-card">
+            <h2>A stronger neighborhood, built together</h2>
+            <p>Each step makes room for neighbors to shape shared services, shared ownership, and a co-op that belongs to the community.</p>
+        </aside>
+    </main>
+
+    <footer class="page-footer">
+        <p>Neighborhood Services Co-Op · A community-powered vision</p>
+    </footer>
+
+    <script>
+        const roadmapIntro = document.querySelector('.roadmap-intro');
+        const signupQrDialog = document.getElementById('signupQrDialog');
+        const signupQrButton = document.querySelector('.signup-qr-button');
+        const signupQrClose = document.querySelector('.signup-qr-close');
+        let introPlaceholder = null;
+        let pinUpdateQueued = false;
+
+        signupQrButton.addEventListener('click', () => signupQrDialog.showModal());
+        signupQrClose.addEventListener('click', () => signupQrDialog.close());
+        signupQrDialog.addEventListener('click', (event) => {
+            if (event.target === signupQrDialog) {
+                signupQrDialog.close();
+            }
+        });
+
+        function updateRoadmapIntroPin() {
+            pinUpdateQueued = false;
+
+            if (!introPlaceholder && roadmapIntro.getBoundingClientRect().top <= 0) {
+                const introBounds = roadmapIntro.getBoundingClientRect();
+                const introMargins = getComputedStyle(roadmapIntro);
+                introPlaceholder = document.createElement('div');
+                introPlaceholder.className = 'roadmap-intro-placeholder';
+                introPlaceholder.setAttribute('aria-hidden', 'true');
+                introPlaceholder.style.height = `${introBounds.height}px`;
+                introPlaceholder.style.marginTop = introMargins.marginTop;
+                introPlaceholder.style.marginBottom = introMargins.marginBottom;
+                roadmapIntro.before(introPlaceholder);
+
+                roadmapIntro.style.setProperty('--intro-origin-left', `${introBounds.left}px`);
+                roadmapIntro.style.setProperty('--intro-origin-width', `${introBounds.width}px`);
+                roadmapIntro.classList.add('is-pinned');
+                requestAnimationFrame(() => roadmapIntro.classList.add('is-expanded'));
+            } else if (introPlaceholder && introPlaceholder.getBoundingClientRect().top > 0) {
+                introPlaceholder.remove();
+                introPlaceholder = null;
+                roadmapIntro.classList.remove('is-expanded', 'is-pinned');
+                roadmapIntro.style.removeProperty('--intro-origin-left');
+                roadmapIntro.style.removeProperty('--intro-origin-width');
+            }
+        }
+
+        function queueRoadmapIntroPinUpdate() {
+            if (!pinUpdateQueued) {
+                pinUpdateQueued = true;
+                requestAnimationFrame(updateRoadmapIntroPin);
+            }
+        }
+
+        window.addEventListener('scroll', queueRoadmapIntroPinUpdate, { passive: true });
+        window.addEventListener('resize', queueRoadmapIntroPinUpdate);
+        updateRoadmapIntroPin();
+    </script>
+</body>
+</html>
