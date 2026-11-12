@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f5f7f3">
+    <title>Mail Services | Neighborhood Services Co-Op</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #20312e;
+            --muted: #53625e;
+            --green: #24574e;
+            --green-dark: #183f39;
+            --green-soft: #e8f1eb;
+            --paper: #ffffff;
+            --canvas: #f5f7f3;
+            --gold: #f1c46a;
+            --line: #dce5de;
+            --shadow: 0 18px 48px rgba(32, 49, 46, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--canvas);
+            color: var(--ink);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 1rem;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1,
+        h2,
+        h3,
+        p {
+            margin-top: 0;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(3.75rem, 8vw, 5.5rem) 1.25rem;
+            background:
+                radial-gradient(ellipse at 82% 15%, rgba(241, 196, 106, 0.18), transparent 30rem),
+                linear-gradient(135deg, var(--green-dark), var(--green));
+            color: #fff;
+        }
+
+        .hero-inner,
+        .page-content {
+            width: min(100% - 2.5rem, 70rem);
+            margin-inline: auto;
+        }
+
+        .eyebrow,
+        .section-kicker {
+            margin-bottom: 0.55rem;
+            color: #d9e8dc;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin-bottom: 0.55rem;
+            font-size: clamp(2.4rem, 5vw, 3.5rem);
+            letter-spacing: -0.045em;
+            line-height: 1.1;
+        }
+
+        .hero-description {
+            max-width: 42rem;
+            margin-bottom: 0;
+            color: #e1ece6;
+            font-size: 1.08rem;
+        }
+
+        .page-content {
+            padding-block: 1.6rem clamp(3rem, 7vw, 5rem);
+        }
+
+        .back-link {
+            display: inline-flex;
+            min-height: 2.75rem;
+            align-items: center;
+            gap: 0.55rem;
+            margin-bottom: 1.4rem;
+            color: var(--green-dark);
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+            text-underline-offset: 0.2em;
+        }
+
+        .back-link:focus-visible,
+        .pickup-button:focus-visible {
+            outline: 3px solid rgba(36, 87, 78, 0.35);
+            outline-offset: 3px;
+        }
+
+        .demo-notice {
+            margin-bottom: 2.5rem;
+            padding: 0.85rem 1rem;
+            border: 1px solid #e8d8a9;
+            border-radius: 0.75rem;
+            background: #fbf8ef;
+            color: #5b4b28;
+            font-size: 0.88rem;
+        }
+
+        .demo-notice strong {
+            color: #443817;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .section-kicker {
+            margin-bottom: 0.35rem;
+            color: var(--green);
+            font-size: 0.72rem;
+        }
+
+        h2 {
+            margin-bottom: 0.35rem;
+            color: var(--green-dark);
+            font-size: clamp(1.65rem, 3.5vw, 2.25rem);
+            letter-spacing: -0.035em;
+            line-height: 1.2;
+        }
+
+        .section-description {
+            margin-bottom: 0;
+            color: var(--muted);
+        }
+
+        .package-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .package-card {
+            display: grid;
+            grid-template-columns: minmax(13rem, 0.85fr) minmax(0, 1.35fr);
+            overflow: hidden;
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            background: var(--paper);
+            box-shadow: 0 5px 18px rgba(32, 49, 46, 0.045);
+        }
+
+        .package-photo,
+        .package-placeholder {
+            width: 100%;
+            min-height: 17rem;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .package-placeholder {
+            display: grid;
+            align-content: center;
+            justify-items: center;
+            gap: 0.8rem;
+            background: linear-gradient(145deg, #edf3ee, #dce8df);
+            color: var(--green-dark);
+            font-size: 1rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+        }
+
+        .placeholder-box {
+            display: grid;
+            width: 5rem;
+            height: 4.25rem;
+            place-items: center;
+            border: 2px solid #a68b60;
+            border-radius: 0.35rem;
+            background: #d6bd91;
+            color: #594b35;
+            font-size: 0.75rem;
+            letter-spacing: 0.03em;
+        }
+
+        .package-details {
+            display: flex;
+            min-width: 0;
+            flex-direction: column;
+            padding: clamp(1.2rem, 3vw, 1.8rem);
+        }
+
+        .package-topline {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.1rem;
+        }
+
+        .package-topline h3 {
+            margin: 0.15rem 0 0;
+            color: var(--green-dark);
+            font-size: 1.25rem;
+            line-height: 1.3;
+        }
+
+        .carrier-label {
+            color: var(--green);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .status-pill {
+            flex: 0 0 auto;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            background: var(--green-soft);
+            color: var(--green-dark);
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        .package-meta {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem 1.25rem;
+            margin: 0 0 1.3rem;
+        }
+
+        .package-meta div {
+            min-width: 0;
+        }
+
+        .package-meta dt {
+            margin-bottom: 0.15rem;
+            color: var(--muted);
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+        .package-meta dd {
+            margin: 0;
+            color: var(--ink);
+            font-size: 0.92rem;
+            font-weight: 700;
+        }
+
+        .pickup-button {
+            width: 100%;
+            min-height: 3.35rem;
+            margin-top: auto;
+            padding: 0.75rem 1rem;
+            border: 0;
+            border-radius: 0.7rem;
+            background: var(--green);
+            color: #fff;
+            font: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background-color 160ms ease, transform 160ms ease;
+        }
+
+        .pickup-button:hover {
+            transform: translateY(-1px);
+            background: var(--green-dark);
+        }
+
+        .empty-state {
+            padding: 1.4rem;
+            border: 1px dashed #b6cec0;
+            border-radius: 0.85rem;
+            background: var(--paper);
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .empty-state[hidden] {
+            display: none;
+        }
+
+        .pickup-feedback {
+            min-height: 1.5rem;
+            margin: 0.8rem 0 0;
+            color: var(--green-dark);
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .history-section {
+            margin-top: clamp(3rem, 7vw, 4.5rem);
+        }
+
+        .history-card {
+            overflow-x: auto;
+            border: 1px solid var(--line);
+            border-radius: 0.9rem;
+            background: var(--paper);
+            box-shadow: 0 5px 18px rgba(32, 49, 46, 0.035);
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem 1.2rem;
+            border-bottom: 1px solid var(--line);
+            white-space: nowrap;
+        }
+
+        .history-table th {
+            background: #f8faf7;
+            color: var(--muted);
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .history-table td {
+            color: var(--ink);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .history-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .page-footer {
+            padding: 1.4rem 1.25rem;
+            background: var(--green-dark);
+            color: #dce8e1;
+            text-align: center;
+            font-size: 0.84rem;
+        }
+
+        .page-footer p {
+            margin: 0;
+        }
+
+        @media (max-width: 650px) {
+            .hero-inner,
+            .page-content {
+                width: min(100% - 1.5rem, 70rem);
+            }
+
+            .package-card {
+                grid-template-columns: 1fr;
+            }
+
+            .package-photo,
+            .package-placeholder {
+                min-height: 13rem;
+                max-height: 18rem;
+            }
+
+            .section-heading {
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .package-meta {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .package-topline {
+                flex-direction: column;
+            }
+
+            .history-table th,
+            .history-table td {
+                padding: 0.8rem;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                scroll-behavior: auto !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-inner">
+            <p class="eyebrow">Neighborhood Services Co-Op · Member portal</p>
+            <h1>Mail Services</h1>
+            <p class="hero-description">Track deliveries and pick up packages at your neighborhood co-op location.</p>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <a class="back-link" href="sample%20dashboard%201.html#services"><span aria-hidden="true">←</span> BACK TO DASHBOARD</a>
+
+        <aside class="demo-notice" aria-label="Demo notice">
+            <strong>Demo / FPO:</strong> Package information and pickup history below are sample content only.
+        </aside>
+
+        <section aria-labelledby="ready-heading">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Your deliveries</p>
+                    <h2 id="ready-heading">Ready for pickup</h2>
+                    <p class="section-description">Packages addressed to Brewerytown Neighbor.</p>
+                </div>
+            </div>
+
+            <div class="package-list" id="ready-packages">
+                <article class="package-card" data-carrier="Amazon" data-category="Package" data-pickup-date="Nov 12, 2026">
+                    <img class="package-photo" src="Images/mail-package.png" alt="Amazon delivery box at a co-op drop point">
+                    <div class="package-details">
+                        <div class="package-topline">
+                            <div>
+                                <span class="carrier-label">Amazon</span>
+                                <h3>Package for Brewerytown Neighbor</h3>
+                            </div>
+                            <span class="status-pill">Ready to pick up</span>
+                        </div>
+                        <dl class="package-meta">
+                            <div><dt>Delivered</dt><dd><time datetime="2026-11-12T09:42">Nov 12, 2026 · 9:42 am</time></dd></div>
+                            <div><dt>Category</dt><dd>Package</dd></div>
+                            <div><dt>Parcel location</dt><dd>Co-op Location A</dd></div>
+                            <div><dt>Recipient</dt><dd>Brewerytown Neighbor</dd></div>
+                        </dl>
+                        <button class="pickup-button" type="button">Mark as picked up</button>
+                    </div>
+                </article>
+
+                <article class="package-card" data-carrier="USPS" data-category="First Class Package" data-pickup-date="Nov 11, 2026">
+                    <div class="package-placeholder" role="img" aria-label="USPS package preview placeholder">
+                        <span class="placeholder-box" aria-hidden="true">USPS</span>
+                        <span>Package preview</span>
+                    </div>
+                    <div class="package-details">
+                        <div class="package-topline">
+                            <div>
+                                <span class="carrier-label">USPS</span>
+                                <h3>First Class Package</h3>
+                            </div>
+                            <span class="status-pill">Ready to pick up</span>
+                        </div>
+                        <dl class="package-meta">
+                            <div><dt>Delivered</dt><dd><time datetime="2026-11-11T15:18">Nov 11, 2026 · 3:18 pm</time></dd></div>
+                            <div><dt>Category</dt><dd>First Class Package</dd></div>
+                            <div><dt>Parcel location</dt><dd>Co-op Location B</dd></div>
+                            <div><dt>Recipient</dt><dd>Brewerytown Neighbor</dd></div>
+                        </dl>
+                        <button class="pickup-button" type="button">Mark as picked up</button>
+                    </div>
+                </article>
+            </div>
+            <p class="empty-state" id="empty-state" hidden>No packages are waiting for pickup.</p>
+            <p class="pickup-feedback" id="pickup-feedback" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="history-section" aria-labelledby="history-heading">
+            <div class="section-heading">
+                <div>
+                    <p class="section-kicker">Previously collected</p>
+                    <h2 id="history-heading">Pickup history</h2>
+                    <p class="section-description">A quick view of packages successfully picked up.</p>
+                </div>
+            </div>
+            <div class="history-card">
+                <table class="history-table">
+                    <thead>
+                        <tr><th scope="col">Package carrier</th><th scope="col">Category</th><th scope="col">Pickup date</th></tr>
+                    </thead>
+                    <tbody id="pickup-history">
+                        <tr><td>FedEx</td><td>Mail</td><td><time datetime="2026-11-07">Nov 7, 2026</time></td></tr>
+                        <tr><td>UPS</td><td>Package</td><td><time datetime="2026-11-04">Nov 4, 2026</time></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <p>Neighborhood Services Co-Op · Mail Services demo</p>
+    </footer>
+
+    <script>
+        const readyPackages = document.getElementById('ready-packages');
+        const pickupHistory = document.getElementById('pickup-history');
+        const emptyState = document.getElementById('empty-state');
+        const pickupFeedback = document.getElementById('pickup-feedback');
+
+        readyPackages.addEventListener('click', (event) => {
+            const button = event.target.closest('.pickup-button');
+            if (!button) {
+                return;
+            }
+
+            const packageCard = button.closest('.package-card');
+            const historyRow = document.createElement('tr');
+            const pickupDate = packageCard.dataset.pickupDate;
+
+            [packageCard.dataset.carrier, packageCard.dataset.category, pickupDate].forEach((value) => {
+                const cell = document.createElement('td');
+                cell.textContent = value;
+                historyRow.append(cell);
+            });
+
+            pickupHistory.prepend(historyRow);
+            packageCard.remove();
+            emptyState.hidden = readyPackages.children.length > 0;
+            pickupFeedback.textContent = 'Package marked as picked up. Your demo pickup history has been updated.';
+        });
+    </script>
+</body>
+</html>

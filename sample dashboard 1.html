@@ -239,6 +239,27 @@
             outline-offset: 3px;
         }
 
+        .service-card--mail {
+            position: relative;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: grid;
+            width: 1.15rem;
+            height: 1.15rem;
+            place-items: center;
+            border: 2px solid var(--paper);
+            border-radius: 50%;
+            background: #c83434;
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
         .service-icon {
             display: grid;
             width: 2.7rem;
@@ -673,10 +694,11 @@
                     <span class="service-icon" aria-hidden="true"><img src="Icons/Compost.png" alt=""></span>
                     <div><h3>Compost Services</h3><p>Keep food scraps in the community cycle</p></div>
                 </article>
-                <article class="service-card">
+                <a class="service-card service-card--mail" href="mail-services.html" aria-label="Mail Services, 1 notification">
                     <span class="service-icon" aria-hidden="true"><img src="Icons/Mail.png" alt=""></span>
+                    <span class="notification-badge" aria-hidden="true">1</span>
                     <div><h3>Mail Services</h3><p>Convenient neighborhood mail support</p></div>
-                </article>
+                </a>
                 <a class="service-card" href="Member%20Pitch%20Page.html">
                     <span class="service-icon" aria-hidden="true"><img src="Icons/Tool%20Library.png" alt=""></span>
                     <div><h3>Tool Library</h3><p>Borrow tools and share what we own</p></div>
